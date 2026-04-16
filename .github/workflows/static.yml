@@ -1,9 +1,9 @@
-name: Deploy React TS
+name: Deploy React TS to Pages
 
 on:
   push:
-    branches: ["develop"] # develop 브랜치에 푸시할 때
-  workflow_dispatch:
+    branches: ["release"] # 이제 release 브랜치에 푸시될 때만 배포됩니다.
+  workflow_dispatch: # 수동 실행 버튼 활성화
 
 permissions:
   contents: read
@@ -15,26 +15,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build: # 1단계: 빌드 작업 추가
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node.js
+
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
+
       - name: Install dependencies
         run: npm install
+
       - name: Build
-        run: npm run build # 여기서 .ts가 .js로 변환됨
+        run: npm run build
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist' # 빌드 결과물이 저장되는 폴더 (Vite 기준)
+          # 중요: Vite면 dist, CRA(create-react-app)면 build라고 적으세요.
+          path: './dist' 
 
-  deploy: # 2단계: 배포 작업
+  deploy:
     needs: build
     runs-on: ubuntu-latest
     environment:
