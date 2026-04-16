@@ -2,8 +2,8 @@ name: Deploy React TS to Pages
 
 on:
   push:
-    branches: ["release"] # 이제 release 브랜치에 푸시될 때만 배포됩니다.
-  workflow_dispatch: # 수동 실행 버튼 활성화
+    branches: ["release"]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -31,13 +31,13 @@ jobs:
         run: npm install
 
       - name: Build
+        # package.json에 등록한 build 스크립트를 실행합니다.
         run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # 중요: Vite면 dist, CRA(create-react-app)면 build라고 적으세요.
-          path: './dist' 
+          path: './dist'
 
   deploy:
     needs: build
