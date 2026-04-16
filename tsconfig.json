@@ -16,7 +16,7 @@
     "jsx": "react-jsx",
 
     /* 핵심 수정 사항 */
-    "noEmit": false,
+    "noEmit": true,
     "outDir": "./dist",
     "rootDir": "./src"
   },
