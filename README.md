@@ -154,6 +154,48 @@ app → pages → widgets → features → entities → shared
 
 ---
 
+## 브랜치 전략
+
+| 브랜치 | 역할 | 배포 |
+|--------|------|------|
+| `develop` | 개발 브랜치 — 모든 작업이 여기서 시작 | — |
+| `release` | 배포 브랜치 — push 시 GitHub Pages 자동 배포 | ✅ 라이브 |
+| `master` | 최종 브랜치 — 확정된 릴리스만 반영 | — |
+
+`master` → `release` → `develop` 방향으로 하위 레이어일수록 자주 움직이며, `master`는 가장 안정된 최종본을 유지합니다.
+
+### 릴리스 플로우
+
+```
+1. develop 에서 개발 및 커밋
+2. develop → release 머지          # push 시 GitHub Pages 자동 배포
+3. 라이브 검증 (스모크 테스트)
+4. release → master 머지 (fast-forward)
+5. master HEAD 에 태그 생성 → push
+```
+
+### 태그 규칙 ([SemVer](https://semver.org/lang/ko/))
+
+| 형태 | 용도 | 예시 |
+|------|------|------|
+| `vMAJOR.MINOR.PATCH` | 공개 릴리스 | `v1.0.0`, `v1.0.1`, `v1.1.0` |
+| `PATCH` 증가 | 버그 수정 (하위호환) | `v1.0.0` → `v1.0.1` |
+| `MINOR` 증가 | 기능 추가 (하위호환) | `v1.0.0` → `v1.1.0` |
+| `MAJOR` 증가 | 하위호환이 깨지는 변경 | `v1.0.0` → `v2.0.0` |
+
+태그는 **`release` → `master` 머지 직후 `master` HEAD 에 생성**합니다. (움직이는 `release`가 아닌, 확정된 `master`에 고정)
+
+```bash
+git checkout master
+git merge --ff-only release
+git push origin master
+
+git tag -a v1.1.0 -m "v1.1.0 - 주요 변경사항 요약"
+git push origin v1.1.0
+```
+
+---
+
 ## 라이선스
 
 **Proprietary — All Rights Reserved.** Copyright © 2026 홍혁준.
