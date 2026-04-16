@@ -29,6 +29,13 @@ import {
 import { FactionCard, createEmptyFaction, factionSearchText } from '../../../entities/faction';
 import { TitleCard, createEmptyTitle, titleSearchText } from '../../../entities/title';
 import {
+  CharacterCard,
+  CHARACTER_SUBS,
+  createEmptyCharacter,
+  characterSearchText,
+  type CharacterSub,
+} from '../../../entities/character';
+import {
   MiscCard,
   MISC_SUBS,
   createEmptyMisc,
@@ -72,6 +79,7 @@ export const CodexPage = () => {
   const [artType, setArtType] = useState<ArtTypeFilter>('전체');
   const [miscSub, setMiscSub] = useState<MiscSub>('내공 이론');
   const [fortuneSub, setFortuneSub] = useState<FortuneSub>('영약');
+  const [characterSub, setCharacterSub] = useState<CharacterSub>('주역');
 
   const reorder = useDragReorder<HasId>(
     getByTab(tab) as HasId[],
@@ -98,6 +106,10 @@ export const CodexPage = () => {
         return data.factions.filter((i) => matches(factionSearchText(i), query));
       case 'titles':
         return data.titles.filter((i) => matches(titleSearchText(i), query));
+      case 'characters': {
+        const items = data.characters.filter((i) => i.sub === characterSub);
+        return items.filter((i) => matches(characterSearchText(i), query));
+      }
       case 'misc': {
         const items = data.misc.filter((i) => i.sub === miscSub);
         return items.filter((i) => matches(miscSearchText(i), query));
@@ -107,7 +119,7 @@ export const CodexPage = () => {
         return items.filter((i) => matches(fortuneSearchText(i), query));
       }
     }
-  }, [tab, data, levelSub, artFaction, artType, miscSub, fortuneSub, query]);
+  }, [tab, data, levelSub, artFaction, artType, miscSub, fortuneSub, characterSub, query]);
 
   const handleTabChange = (next: TabId) => {
     setTab(next);
@@ -132,6 +144,13 @@ export const CodexPage = () => {
         break;
       case 'titles':
         setEdit({ tabId: 'titles', item: { ...createEmptyTitle(), id: '' }, isNew: true });
+        break;
+      case 'characters':
+        setEdit({
+          tabId: 'characters',
+          item: { ...createEmptyCharacter(characterSub), id: '' },
+          isNew: true,
+        });
         break;
       case 'misc':
         setEdit({ tabId: 'misc', item: { ...createEmptyMisc(miscSub), id: '' }, isNew: true });
@@ -256,6 +275,19 @@ export const CodexPage = () => {
             </div>
           </div>
         );
+      case 'characters':
+        return (
+          <div style={{ marginBottom: '12px' }}>
+            <PillSelector
+              options={CHARACTER_SUBS}
+              value={characterSub}
+              onChange={(v) => {
+                setCharacterSub(v);
+                setExpandedId(null);
+              }}
+            />
+          </div>
+        );
       case 'misc':
         return (
           <div style={{ marginBottom: '12px' }}>
@@ -358,6 +390,28 @@ export const CodexPage = () => {
             />
           </DraggableRow>
         ));
+      case 'characters':
+        return (filtered as typeof data.characters).map((i) => (
+          <DraggableRow key={i.id} id={i.id} reorder={reorder}>
+            <CharacterCard
+              character={i}
+              expanded={expandedId === i.id}
+              onToggle={() => toggleExpand(i.id)}
+              onEdit={() =>
+                setEdit({
+                  tabId: 'characters',
+                  item: {
+                    ...i,
+                    aliases: [...i.aliases],
+                    traits: [...i.traits],
+                    relations: [...i.relations],
+                  },
+                  isNew: false,
+                })
+              }
+            />
+          </DraggableRow>
+        ));
       case 'misc':
         return (filtered as typeof data.misc).map((i) => (
           <DraggableRow key={i.id} id={i.id} reorder={reorder}>
@@ -444,6 +498,7 @@ export const CodexPage = () => {
       {showExport && (
         <ExportModal
           data={data}
+          initialScope={tab}
           onClose={() => setShowExport(false)}
           onCopied={() => {
             setShowExport(false);

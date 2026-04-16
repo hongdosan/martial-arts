@@ -1,5 +1,5 @@
-import type { Level } from '../model/types';
-import { DEFAULT_LEVELS } from '../model/default-data';
+import type {Level} from '../model/types';
+import {DEFAULT_LEVELS} from '../model/default-data';
 import {
   cardStyle,
   cardHeaderStyle,
@@ -9,7 +9,7 @@ import {
   Tag,
   EditIconButton,
 } from '../../../shared/ui';
-import { colorOfTag, RANK_COLORS } from '../../../shared/config';
+import {colorOfTag, RANK_COLORS} from '../../../shared/config';
 
 interface LevelCardProps {
   level: Level;
@@ -27,7 +27,7 @@ const pickColor = (level: Level): string => {
   return colorOfTag(level.sub);
 };
 
-export const LevelCard = ({ level, expanded, onToggle, onEdit }: LevelCardProps) => {
+export const LevelCard = ({level, expanded, onToggle, onEdit}: LevelCardProps) => {
   const hasRank = level.sub === '경지' || level.sub === '검도';
   const color = pickColor(level);
   const showDetails = expanded && (level.conditions || level.notes);
@@ -37,14 +37,14 @@ export const LevelCard = ({ level, expanded, onToggle, onEdit }: LevelCardProps)
       <div onClick={onToggle} style={cardHeaderStyle}>
         {hasRank && level.rank ? (
           <div style={rankBadgeStyle(color)}>
-            <p style={{ margin: 0, fontSize: '13px', fontWeight: 600, color }}>{level.rank}</p>
+            <p style={{margin: 0, fontSize: '13px', fontWeight: 600, color}}>{level.rank}</p>
           </div>
         ) : (
-          <div style={{ ...rankBadgeStyle(color), width: '6px', padding: 0 }} />
+          <div style={{...rankBadgeStyle(color), width: '6px', padding: 0}}/>
         )}
         <div style={cardBodyStyle}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-            <p style={{ margin: 0, fontWeight: 600, fontSize: '14px' }}>{level.name}</p>
+          <div style={{display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap'}}>
+            <p style={{margin: 0, fontWeight: 600, fontSize: '14px'}}>{level.name}</p>
             <Tag color={color}>{level.sub}</Tag>
             {level.aliases.map((alias, i) => (
               <Tag key={i} color={color} shape="pill">
@@ -63,7 +63,7 @@ export const LevelCard = ({ level, expanded, onToggle, onEdit }: LevelCardProps)
             {level.desc}
           </p>
         </div>
-        <EditIconButton onClick={onEdit} />
+        <EditIconButton onClick={onEdit}/>
         <div
           style={{
             padding: '0 12px',
@@ -90,7 +90,7 @@ export const LevelCard = ({ level, expanded, onToggle, onEdit }: LevelCardProps)
               >
                 조건 / 특이사항
               </p>
-              <p style={{ margin: 0, fontSize: '13px', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>
+              <p style={{margin: 0, fontSize: '13px', lineHeight: 1.7, whiteSpace: 'pre-wrap'}}>
                 {level.conditions}
               </p>
             </div>

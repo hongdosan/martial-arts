@@ -13,9 +13,9 @@ export const CodexHeader = ({ onExport }: CodexHeaderProps) => (
     }}
   >
     <div>
-      <h1 style={{ margin: 0, fontSize: '20px', fontWeight: 700, letterSpacing: '-0.5px' }}>武林典籍</h1>
+      <h1 style={{ margin: 0, fontSize: '20px', fontWeight: 700, letterSpacing: '-0.5px' }}>天機網</h1>
       <p style={{ margin: '3px 0 0', fontSize: '12px', color: 'var(--color-text-tertiary)' }}>
-        무협 세계관 레퍼런스
+        천하의 기밀을 엮어 강호의 서열을 정하다
       </p>
     </div>
     <button
@@ -33,7 +33,7 @@ export const CodexHeader = ({ onExport }: CodexHeaderProps) => (
         marginTop: '4px',
       }}
     >
-      📋 전체 내보내기
+      📋 내보내기
     </button>
   </div>
 );

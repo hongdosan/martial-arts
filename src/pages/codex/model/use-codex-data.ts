@@ -5,6 +5,7 @@ import { DEFAULT_LEVELS, type Level } from '../../../entities/level';
 import { DEFAULT_ARTS, type Art } from '../../../entities/art';
 import { DEFAULT_FACTIONS, type Faction } from '../../../entities/faction';
 import { DEFAULT_TITLES, type Title } from '../../../entities/title';
+import { DEFAULT_CHARACTERS, type Character } from '../../../entities/character';
 import { DEFAULT_MISC, type Misc } from '../../../entities/misc';
 import { DEFAULT_FORTUNE, type Fortune } from '../../../entities/fortune';
 
@@ -13,6 +14,7 @@ export interface CodexData {
   arts: Art[];
   factions: Faction[];
   titles: Title[];
+  characters: Character[];
   misc: Misc[];
   fortune: Fortune[];
 }
@@ -22,6 +24,7 @@ const ORIGINAL: CodexData = {
   arts: DEFAULT_ARTS,
   factions: DEFAULT_FACTIONS,
   titles: DEFAULT_TITLES,
+  characters: DEFAULT_CHARACTERS,
   misc: DEFAULT_MISC,
   fortune: DEFAULT_FORTUNE,
 };
@@ -31,6 +34,7 @@ type TabDataMap = {
   arts: Art;
   factions: Faction;
   titles: Title;
+  characters: Character;
   misc: Misc;
   fortune: Fortune;
 };
@@ -53,16 +57,17 @@ export const useCodexData = (): CodexDataApi => {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const [levels, arts, factions, titles, misc, fortune] = await Promise.all([
+      const [levels, arts, factions, titles, characters, misc, fortune] = await Promise.all([
         storage.get<Level[]>(dataKey('levels'), DEFAULT_LEVELS),
         storage.get<Art[]>(dataKey('arts'), DEFAULT_ARTS),
         storage.get<Faction[]>(dataKey('factions'), DEFAULT_FACTIONS),
         storage.get<Title[]>(dataKey('titles'), DEFAULT_TITLES),
+        storage.get<Character[]>(dataKey('characters'), DEFAULT_CHARACTERS),
         storage.get<Misc[]>(dataKey('misc'), DEFAULT_MISC),
         storage.get<Fortune[]>(dataKey('fortune'), DEFAULT_FORTUNE),
       ]);
       if (cancelled) return;
-      setData({ levels, arts, factions, titles, misc, fortune });
+      setData({ levels, arts, factions, titles, characters, misc, fortune });
       setReady(true);
     })();
     return () => {

@@ -1,4 +1,12 @@
-export const TAB_IDS = ['levels', 'arts', 'factions', 'titles', 'fortune', 'misc'] as const;
+export const TAB_IDS = [
+  'levels',
+  'arts',
+  'factions',
+  'titles',
+  'characters',
+  'fortune',
+  'misc',
+] as const;
 export type TabId = (typeof TAB_IDS)[number];
 
 export interface TabDef {
@@ -12,6 +20,7 @@ export const TABS: readonly TabDef[] = [
   { id: 'arts', label: '무공', icon: '⚔' },
   { id: 'factions', label: '세력', icon: '旗' },
   { id: 'titles', label: '칭호', icon: '冠' },
+  { id: 'characters', label: '열전', icon: '人' },
   { id: 'fortune', label: '기연', icon: '寶' },
   { id: 'misc', label: '기타', icon: '卷' },
 ];

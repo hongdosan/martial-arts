@@ -4,6 +4,7 @@ import { LevelForm } from './level-form';
 import { ArtForm } from './art-form';
 import { FactionForm } from './faction-form';
 import { TitleForm } from './title-form';
+import { CharacterForm } from './character-form';
 import { MiscForm } from './misc-form';
 import { FortuneForm } from './fortune-form';
 
@@ -50,6 +51,13 @@ export const EntryEditModal = ({
       case 'titles':
         return (
           <TitleForm
+            value={state.item}
+            onPatch={(p) => onChange({ ...state, item: { ...state.item, ...p } })}
+          />
+        );
+      case 'characters':
+        return (
+          <CharacterForm
             value={state.item}
             onPatch={(p) => onChange({ ...state, item: { ...state.item, ...p } })}
           />

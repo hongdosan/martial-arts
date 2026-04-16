@@ -98,6 +98,23 @@ const ART_TYPE_LABELS: Record<ArtTypeFilter, string> = { 전체: '전체', 심�
 interface Faction extends HasId { name: string; tag: string; desc: string; groups: MemberGroup[]; notes: string; }
 interface Title extends HasId { name: string; tag: string; desc: string; members: MemberEntry[]; notes: string; }
 
+const CHARACTER_SUBS = ['주역', '조연', '반동', '기타'] as const;
+type CharacterSub = (typeof CHARACTER_SUBS)[number];
+interface Character extends HasId {
+  sub: CharacterSub;
+  name: string;
+  aliases: string[];
+  source: string;
+  sex: string;
+  age: string;
+  origin: string;
+  desc: string;
+  traits: string[];
+  relations: MemberEntry[];
+  notes: string;
+}
+const CHARACTER_SUB_COLOR: Record<CharacterSub, string> = { 주역: '#378ADD', 조연: '#1D9E75', 반동: '#D85A30', 기타: '#888780' };
+
 const MISC_SUBS = ['내공 이론', '무공 범주', '증상', '기타'] as const;
 type MiscSub = (typeof MISC_SUBS)[number];
 interface Misc extends HasId { sub: MiscSub; name: string; tag: string; desc: string; details: DetailEntry[]; notes: string; }
@@ -106,7 +123,7 @@ const FORTUNE_SUBS = ['영약', '영물', '신병이기'] as const;
 type FortuneSub = (typeof FORTUNE_SUBS)[number];
 interface Fortune extends HasId { sub: FortuneSub; name: string; tag: string; desc: string; details: DetailEntry[]; notes: string; }
 
-const TAB_IDS = ['levels', 'arts', 'factions', 'titles', 'fortune', 'misc'] as const;
+const TAB_IDS = ['levels', 'arts', 'factions', 'titles', 'characters', 'fortune', 'misc'] as const;
 type TabId = (typeof TAB_IDS)[number];
 interface TabDef { id: TabId; label: string; icon: string; }
 const TABS: TabDef[] = [
@@ -114,6 +131,7 @@ const TABS: TabDef[] = [
   { id: 'arts', label: '무공', icon: '⚔' },
   { id: 'factions', label: '세력', icon: '旗' },
   { id: 'titles', label: '칭호', icon: '冠' },
+  { id: 'characters', label: '열전', icon: '人' },
   { id: 'fortune', label: '기연', icon: '寶' },
   { id: 'misc', label: '기타', icon: '卷' },
 ];
@@ -200,6 +218,8 @@ const DEFAULT_TITLES: Title[] = [
   { id: 't1', name: '○○마', tag: '개인 이명', desc: '특정 분야에서 극에 도달한 인간에게 붙는 별명. 사람이 아닌 것 같은 수준이라는 의미로 마(魔)를 붙임.', members: [{ n: '검마', d: '검의 정점에 오른 존재.' }, { n: '독마', d: '독술의 끝. 싸움 자체가 불가능한 타입.' }, { n: '광마', d: '예측 불가한 전투 스타일.' }, { n: '도마', d: '도(刀) 계열 최강자.' }, { n: '극마', d: '극한까지 밀어붙인 존재.' }, { n: '살마', d: '살인에 특화. 암살, 전투 둘 다 가능.' }, { n: '천마', d: '천마신교(마교)의 교주. 마교 내 절대적 권력의 상징.' }, { n: '혈마', d: '혈마신교(혈교)의 교주. 피를 다루는 금단의 존재.' }], notes: '분야별 인간 최종 진화형. ○○마는 공식 직책이 아닌 강호에서 붙여주는 이명.' },
   { id: 't6', name: '생사신의', tag: '개인 이명', desc: '살리고 죽이는 것 모두 신의 경지에 이른 달인.', members: [], notes: '' },
 ];
+
+const DEFAULT_CHARACTERS: Character[] = [];
 
 const DEFAULT_MISC: Misc[] = [
   { id: 'n1', sub: '내공 이론', name: '정기 (正氣)', tag: '내공 이론', desc: '순수한 에너지나 정종 무공을 통해 쌓은 맑고 바른 내공. 정파 무공의 핵심 내력.', details: [{ l: '순양내공', t: '양기가 강하고 올바른 기운.' }, { l: '음유내공', t: '부드럽고 차가운 기운.' }, { l: '장점', t: '축적 한계점이 가장 높고 절정 이상의 벽을 넘기 가장 쉬움.' }, { l: '단점', t: '축적 속도가 가장 느림.' }], notes: '' },
@@ -587,6 +607,67 @@ const TitleCard = ({ title, expanded, onToggle, onEdit }: { title: Title; expand
   );
 };
 
+const CharacterCard = ({ character, expanded, onToggle, onEdit }: { character: Character; expanded: boolean; onToggle: () => void; onEdit: () => void }) => {
+  const color = CHARACTER_SUB_COLOR[character.sub];
+  const originColor = colorOfTag(character.origin);
+  const hasTraits = character.traits.length > 0;
+  const hasRelations = character.relations.length > 0;
+  const showExpand = expanded && (character.source || character.sex || character.age || character.origin || hasTraits || hasRelations || character.notes);
+  return (
+    <div style={cardStyle}>
+      <div onClick={onToggle} style={{ ...cardHeader, padding: '14px 16px', gap: '8px', alignItems: 'flex-start' }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '4px' }}>
+            <p style={{ margin: 0, fontWeight: 700, fontSize: '15px', letterSpacing: '-0.3px' }}>{character.name}</p>
+            <Tag color={color}>{character.sub}</Tag>
+            {character.aliases.map((a, i) => <Tag key={i} color={color} shape="pill">{a}</Tag>)}
+            {character.source && <span style={{ fontSize: '10px', color: C.textTertiary }}>{character.source}</span>}
+          </div>
+          {character.desc && <p style={{ margin: 0, fontSize: '13px', color: C.textSecondary, lineHeight: 1.6 }}>{character.desc}</p>}
+        </div>
+        <EditIconButton onClick={onEdit} />
+        <ExpandChevron expanded={expanded} />
+      </div>
+      {showExpand && (
+        <div style={cardExpand}>
+          {(character.sex || character.age || character.origin) && (
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              {character.sex && <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ fontSize: '11px', color: C.textTertiary, fontWeight: 600 }}>성별</span><span style={{ fontSize: '13px' }}>{character.sex}</span></div>}
+              {character.age && <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ fontSize: '11px', color: C.textTertiary, fontWeight: 600 }}>나이</span><span style={{ fontSize: '13px' }}>{character.age}</span></div>}
+              {character.origin && <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><span style={{ fontSize: '11px', color: C.textTertiary, fontWeight: 600 }}>출신</span><Tag color={originColor}>{character.origin}</Tag></div>}
+            </div>
+          )}
+          {hasTraits && (
+            <div>
+              <p style={{ margin: '0 0 4px', fontSize: '11px', color: C.textSecondary, fontWeight: 600 }}>특징</p>
+              {character.traits.map((t, j) => (
+                <div key={j} style={{ display: 'flex', gap: '8px', alignItems: 'flex-start', marginBottom: '3px' }}>
+                  <span style={{ width: 4, height: 4, borderRadius: '50%', background: color, marginTop: 8, flexShrink: 0 }} />
+                  <p style={{ margin: 0, fontSize: '13px', lineHeight: 1.7 }}>{t}</p>
+                </div>
+              ))}
+            </div>
+          )}
+          {hasRelations && (
+            <div>
+              <p style={{ margin: '0 0 4px', fontSize: '11px', color: C.textSecondary, fontWeight: 600 }}>관계</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(200px,1fr))', gap: '6px' }}>
+                {character.relations.map((r, i) => (
+                  <div key={i} style={memberItem(color)}>
+                    <p style={{ margin: '0 0 2px', fontWeight: 600, fontSize: '13px' }}>{r.n}</p>
+                    <p style={{ margin: 0, fontSize: '12px', color: C.textSecondary, lineHeight: 1.5 }}>{r.d}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {character.notes && <NotesBlock notes={character.notes} />}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const DetailCard = ({ data, expanded, onToggle, onEdit }: { data: { id: string; name: string; tag: string; desc: string; details: DetailEntry[]; notes: string }; expanded: boolean; onToggle: () => void; onEdit: () => void }) => {
   const color = colorOfTag(data.tag);
   const hasDetails = data.details.length > 0;
@@ -630,6 +711,7 @@ const levelSearchText = (x: Level) => joinSearchable([x.name, x.desc, x.conditio
 const artSearchText = (x: Art) => joinSearchable([x.name, x.desc, x.tag, x.notes, x.faction, x.type, x.merits, x.demerits, ...x.traits, ...x.details.map((d) => d.l + d.t)]);
 const factionSearchText = (x: Faction) => joinSearchable([x.name, x.tag, x.desc, x.notes, ...x.groups.flatMap((g) => [g.label, ...g.members.map((m) => m.n + m.d)])]);
 const titleSearchText = (x: Title) => joinSearchable([x.name, x.tag, x.desc, x.notes, ...x.members.map((m) => m.n + m.d)]);
+const characterSearchText = (x: Character) => joinSearchable([x.name, x.desc, x.source, x.origin, x.sex, x.age, x.notes, ...x.aliases, ...x.traits, ...x.relations.map((r) => r.n + r.d)]);
 const miscSearchText = (x: Misc) => joinSearchable([x.name, x.tag, x.desc, x.notes, ...x.details.map((d) => d.l + d.t)]);
 const fortuneSearchText = (x: Fortune) => joinSearchable([x.name, x.tag, x.desc, x.notes, ...x.details.map((d) => d.l + d.t)]);
 
@@ -640,6 +722,7 @@ type EditState =
   | { tabId: 'arts'; item: Art; isNew: boolean }
   | { tabId: 'factions'; item: Faction; isNew: boolean }
   | { tabId: 'titles'; item: Title; isNew: boolean }
+  | { tabId: 'characters'; item: Character; isNew: boolean }
   | { tabId: 'misc'; item: Misc; isNew: boolean }
   | { tabId: 'fortune'; item: Fortune; isNew: boolean };
 
@@ -696,6 +779,26 @@ const TitleForm = ({ value, onPatch }: { value: Title; onPatch: (p: Partial<Titl
   </>
 );
 
+const CharacterForm = ({ value, onPatch }: { value: Character; onPatch: (p: Partial<Character>) => void }) => (
+  <>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+      <TextField label="분류" value={value.sub} onChange={(v) => onPatch({ sub: v as CharacterSub })} placeholder="주역, 조연, 반동, 기타" />
+      <TextField label="출처" value={value.source} onChange={(v) => onPatch({ source: v })} placeholder="소설·웹툰명 (비워두면 커스텀 인물)" />
+    </div>
+    <TextField label="이름" value={value.name} onChange={(v) => onPatch({ name: v })} />
+    <TagField label="별칭" value={value.aliases} onChange={(v) => onPatch({ aliases: v })} />
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 2fr', gap: '8px' }}>
+      <TextField label="성별" value={value.sex} onChange={(v) => onPatch({ sex: v })} placeholder="남/여/기타" />
+      <TextField label="나이" value={value.age} onChange={(v) => onPatch({ age: v })} placeholder="20대 / 미상" />
+      <TextField label="출신" value={value.origin} onChange={(v) => onPatch({ origin: v })} placeholder="화산파 / 낭인 등" />
+    </div>
+    <TextField label="설명" value={value.desc} onChange={(v) => onPatch({ desc: v })} multiline />
+    <TagField label="특징" value={value.traits} onChange={(v) => onPatch({ traits: v })} />
+    <PairListField label="관계" keyLeft="n" keyRight="d" value={value.relations} onChange={(v) => onPatch({ relations: v as MemberEntry[] })} placeholderLeft="인물/관계" placeholderRight="설명" />
+    <TextField label="메모" value={value.notes} onChange={(v) => onPatch({ notes: v })} multiline />
+  </>
+);
+
 const MiscForm = ({ value, onPatch }: { value: Misc; onPatch: (p: Partial<Misc>) => void }) => (
   <>
     <TextField label="분류" value={value.sub} onChange={(v) => onPatch({ sub: v as MiscSub })} placeholder="내공 이론, 무공 범주, 증상, 기타" />
@@ -729,6 +832,7 @@ const EntryEditModal = ({ state, onChange, onSave, onDelete, onClose }: { state:
       case 'arts': return <ArtForm value={state.item} onPatch={(p) => patch<{ tabId: 'arts'; item: Art; isNew: boolean }>(p)} />;
       case 'factions': return <FactionForm value={state.item} onPatch={(p) => patch<{ tabId: 'factions'; item: Faction; isNew: boolean }>(p)} />;
       case 'titles': return <TitleForm value={state.item} onPatch={(p) => patch<{ tabId: 'titles'; item: Title; isNew: boolean }>(p)} />;
+      case 'characters': return <CharacterForm value={state.item} onPatch={(p) => patch<{ tabId: 'characters'; item: Character; isNew: boolean }>(p)} />;
       case 'misc': return <MiscForm value={state.item} onPatch={(p) => patch<{ tabId: 'misc'; item: Misc; isNew: boolean }>(p)} />;
       case 'fortune': return <FortuneForm value={state.item} onPatch={(p) => patch<{ tabId: 'fortune'; item: Fortune; isNew: boolean }>(p)} />;
     }
@@ -816,6 +920,7 @@ export default function CodexArtifact() {
   const [arts, setArts] = useState<Art[]>(DEFAULT_ARTS);
   const [factions, setFactions] = useState<Faction[]>(DEFAULT_FACTIONS);
   const [titles, setTitles] = useState<Title[]>(DEFAULT_TITLES);
+  const [characters, setCharacters] = useState<Character[]>(DEFAULT_CHARACTERS);
   const [misc, setMisc] = useState<Misc[]>(DEFAULT_MISC);
   const [fortune, setFortune] = useState<Fortune[]>(DEFAULT_FORTUNE);
 
@@ -831,6 +936,7 @@ export default function CodexArtifact() {
   const [artType, setArtType] = useState<ArtTypeFilter>('전체');
   const [miscSub, setMiscSub] = useState<MiscSub>('내공 이론');
   const [fortuneSub, setFortuneSub] = useState<FortuneSub>('영약');
+  const [characterSub, setCharacterSub] = useState<CharacterSub>('주역');
 
   const setByTab = useCallback((t: TabId, next: unknown) => {
     switch (t) {
@@ -838,6 +944,7 @@ export default function CodexArtifact() {
       case 'arts': setArts(next as Art[]); break;
       case 'factions': setFactions(next as Faction[]); break;
       case 'titles': setTitles(next as Title[]); break;
+      case 'characters': setCharacters(next as Character[]); break;
       case 'misc': setMisc(next as Misc[]); break;
       case 'fortune': setFortune(next as Fortune[]); break;
     }
@@ -849,10 +956,11 @@ export default function CodexArtifact() {
       case 'arts': return arts;
       case 'factions': return factions;
       case 'titles': return titles;
+      case 'characters': return characters;
       case 'misc': return misc;
       case 'fortune': return fortune;
     }
-  }, [levels, arts, factions, titles, misc, fortune]);
+  }, [levels, arts, factions, titles, characters, misc, fortune]);
 
   const reorder = useDragReorder<HasId>(getByTab(tab), (next) => setByTab(tab, next));
 
@@ -869,10 +977,11 @@ export default function CodexArtifact() {
       }
       case 'factions': return factions.filter((i) => matches(factionSearchText(i), query));
       case 'titles': return titles.filter((i) => matches(titleSearchText(i), query));
+      case 'characters': return characters.filter((i) => i.sub === characterSub).filter((i) => matches(characterSearchText(i), query));
       case 'misc': return misc.filter((i) => i.sub === miscSub).filter((i) => matches(miscSearchText(i), query));
       case 'fortune': return fortune.filter((i) => i.sub === fortuneSub).filter((i) => matches(fortuneSearchText(i), query));
     }
-  }, [tab, levels, arts, factions, titles, misc, fortune, levelSub, artFaction, artType, miscSub, fortuneSub, query]);
+  }, [tab, levels, arts, factions, titles, characters, misc, fortune, levelSub, artFaction, artType, miscSub, fortuneSub, characterSub, query]);
 
   const handleTabChange = (next: TabId) => { setTab(next); setExpandedId(null); setQuery(''); };
 
@@ -883,6 +992,7 @@ export default function CodexArtifact() {
       case 'arts': setEdit(make({ tabId: 'arts', item: { id: '', faction: artFaction === '전체' ? '정파' : artFaction, type: artType === '전체' ? '심법' : artType, name: '', tag: '', desc: '', traits: [], merits: '', demerits: '', details: [], notes: '' }, isNew: true })); break;
       case 'factions': setEdit(make({ tabId: 'factions', item: { id: '', name: '', tag: '', desc: '', groups: [{ label: '', members: [{ n: '', d: '' }] }], notes: '' }, isNew: true })); break;
       case 'titles': setEdit(make({ tabId: 'titles', item: { id: '', name: '', tag: '', desc: '', members: [], notes: '' }, isNew: true })); break;
+      case 'characters': setEdit(make({ tabId: 'characters', item: { id: '', sub: characterSub, name: '', aliases: [], source: '', sex: '', age: '', origin: '', desc: '', traits: [], relations: [], notes: '' }, isNew: true })); break;
       case 'misc': setEdit(make({ tabId: 'misc', item: { id: '', sub: miscSub, name: '', tag: '', desc: '', details: [], notes: '' }, isNew: true })); break;
       case 'fortune': setEdit(make({ tabId: 'fortune', item: { id: '', sub: fortuneSub, name: '', tag: '', desc: '', details: [], notes: '' }, isNew: true })); break;
     }
@@ -914,6 +1024,7 @@ export default function CodexArtifact() {
           case 'arts': setArts(DEFAULT_ARTS); break;
           case 'factions': setFactions(DEFAULT_FACTIONS); break;
           case 'titles': setTitles(DEFAULT_TITLES); break;
+          case 'characters': setCharacters(DEFAULT_CHARACTERS); break;
           case 'misc': setMisc(DEFAULT_MISC); break;
           case 'fortune': setFortune(DEFAULT_FORTUNE); break;
         }
@@ -940,6 +1051,8 @@ export default function CodexArtifact() {
             </div>
           </div>
         );
+      case 'characters':
+        return <div style={{ marginBottom: '12px' }}><PillSelector options={CHARACTER_SUBS} value={characterSub} onChange={(v) => { setCharacterSub(v); setExpandedId(null); }} /></div>;
       case 'misc':
         return <div style={{ marginBottom: '12px' }}><PillSelector options={MISC_SUBS} value={miscSub} onChange={(v) => { setMiscSub(v); setExpandedId(null); }} /></div>;
       case 'fortune':
@@ -988,6 +1101,13 @@ export default function CodexArtifact() {
               onEdit={() => setEdit({ tabId: 'titles', item: { ...i, members: [...i.members] }, isNew: false })} />
           </DraggableRow>
         ));
+      case 'characters':
+        return (filtered as Character[]).map((i) => (
+          <DraggableRow key={i.id} id={i.id}>
+            <CharacterCard character={i} expanded={expandedId === i.id} onToggle={() => toggleExpand(i.id)}
+              onEdit={() => setEdit({ tabId: 'characters', item: { ...i, aliases: [...i.aliases], traits: [...i.traits], relations: [...i.relations] }, isNew: false })} />
+          </DraggableRow>
+        ));
       case 'misc':
         return (filtered as Misc[]).map((i) => (
           <DraggableRow key={i.id} id={i.id}>
@@ -1012,10 +1132,10 @@ export default function CodexArtifact() {
       {/* 헤더 */}
       <div style={{ padding: '20px 20px 14px', borderBottom: `1px solid ${C.borderTertiary}`, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <div>
-          <h1 style={{ margin: 0, fontSize: '20px', fontWeight: 700, letterSpacing: '-0.5px' }}>武林典籍</h1>
-          <p style={{ margin: '3px 0 0', fontSize: '12px', color: C.textTertiary }}>무협 세계관 레퍼런스</p>
+          <h1 style={{ margin: 0, fontSize: '20px', fontWeight: 700, letterSpacing: '-0.5px' }}>天機網</h1>
+          <p style={{ margin: '3px 0 0', fontSize: '12px', color: C.textTertiary }}>천하의 기밀을 엮어 강호의 서열을 정하다</p>
         </div>
-        <button type="button" onClick={() => setShowExport(true)} style={{ padding: '5px 12px', borderRadius: '6px', border: `1px solid ${C.borderTertiary}`, background: 'transparent', cursor: 'pointer', fontSize: '11px', color: C.textTertiary, whiteSpace: 'nowrap', marginTop: '4px' }}>📋 전체 내보내기</button>
+        <button type="button" onClick={() => setShowExport(true)} style={{ padding: '5px 12px', borderRadius: '6px', border: `1px solid ${C.borderTertiary}`, background: 'transparent', cursor: 'pointer', fontSize: '11px', color: C.textTertiary, whiteSpace: 'nowrap', marginTop: '4px' }}>📋 내보내기</button>
       </div>
 
       {/* 검색 */}
@@ -1066,7 +1186,8 @@ export default function CodexArtifact() {
       )}
       {confirm && <ConfirmDialog message={confirm.msg} onConfirm={confirm.onOk} onCancel={() => setConfirm(null)} />}
       {showExport && (
-        <ExportModal data={{ levels, arts, factions, titles, misc, fortune }}
+        <ExportModal data={{ levels, arts, factions, titles, characters, misc, fortune }}
+          initialScope={tab}
           onClose={() => setShowExport(false)}
           onCopied={() => { setShowExport(false); setConfirm({ msg: '클립보드에 복사되었습니다.', onOk: null }); }} />
       )}
@@ -1074,17 +1195,36 @@ export default function CodexArtifact() {
   );
 }
 
-const ExportModal = ({ data, onClose, onCopied }: { data: unknown; onClose: () => void; onCopied: () => void }) => {
+type ExportScope = TabId | 'all';
+
+const ExportModal = ({ data, initialScope = 'all', onClose, onCopied }: { data: Record<TabId, unknown>; initialScope?: ExportScope; onClose: () => void; onCopied: () => void }) => {
+  const [scope, setScope] = useState<ExportScope>(initialScope);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const json = useMemo(() => JSON.stringify(data, null, 2), [data]);
+  const SCOPE_LABEL: Record<ExportScope, string> = useMemo(
+    () => ({ all: '전체', ...(Object.fromEntries(TABS.map((t) => [t.id, t.label])) as Record<TabId, string>) }),
+    [],
+  );
+  const SCOPE_OPTIONS: ExportScope[] = useMemo(() => ['all', ...TABS.map((t) => t.id)], []);
+  const json = useMemo(() => {
+    const payload = scope === 'all' ? data : { [scope]: data[scope] };
+    return JSON.stringify(payload, null, 2);
+  }, [data, scope]);
   const handleCopy = async () => {
     const ok = await copyToClipboard(json);
     if (ok) onCopied();
     else if (textareaRef.current) textareaRef.current.select();
   };
+  const title = scope === 'all' ? '전체 데이터 내보내기' : `${SCOPE_LABEL[scope]} 데이터 내보내기`;
   return (
-    <Modal open onClose={onClose} title="전체 데이터 내보내기">
-      <p style={{ margin: '0 0 12px', fontSize: '12px', color: '#888' }}>아래 JSON을 복사해 두면 다음 세션에 기본 데이터로 반영할 수 있습니다.</p>
+    <Modal open onClose={onClose} title={title}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+        <label style={{ fontSize: '12px', color: '#555', fontWeight: 600 }}>범위</label>
+        <select value={scope} onChange={(e) => setScope(e.target.value as ExportScope)}
+          style={{ padding: '6px 10px', borderRadius: '6px', border: '1px solid #ccc', background: '#fff', color: '#111', fontSize: '12px', fontFamily: 'inherit', cursor: 'pointer' }}>
+          {SCOPE_OPTIONS.map((s) => <option key={s} value={s}>{SCOPE_LABEL[s]}</option>)}
+        </select>
+      </div>
+      <p style={{ margin: '0 0 12px', fontSize: '12px', color: '#888' }}>선택한 범위의 JSON을 복사해 두면 다음 세션에 기본 데이터로 반영할 수 있습니다.</p>
       <textarea ref={textareaRef} readOnly value={json} style={{ width: '100%', boxSizing: 'border-box', height: '400px', padding: '12px', borderRadius: '6px', border: '1px solid #ddd', background: '#f0f0f0', color: '#111', fontSize: '11px', fontFamily: 'monospace', resize: 'vertical' }} />
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', marginTop: '12px' }}>
         <button type="button" onClick={onClose} style={{ padding: '8px 20px', borderRadius: '6px', border: '1px solid #bbb', background: 'transparent', cursor: 'pointer', fontSize: '13px', color: '#555' }}>닫기</button>

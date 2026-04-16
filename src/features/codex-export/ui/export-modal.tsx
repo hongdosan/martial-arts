@@ -1,16 +1,32 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Modal } from '../../../shared/ui';
 import { copyToClipboard } from '../../../shared/lib';
+import { TABS, type TabId } from '../../../shared/config';
+
+export type ExportScope = TabId | 'all';
 
 interface ExportModalProps {
-  data: unknown;
+  data: Record<TabId, unknown>;
+  initialScope?: ExportScope;
   onClose: () => void;
   onCopied: () => void;
 }
 
-export const ExportModal = ({ data, onClose, onCopied }: ExportModalProps) => {
+const SCOPE_LABEL: Record<ExportScope, string> = {
+  all: '전체',
+  ...(Object.fromEntries(TABS.map((t) => [t.id, t.label])) as Record<TabId, string>),
+};
+
+const SCOPE_OPTIONS: ExportScope[] = ['all', ...TABS.map((t) => t.id)];
+
+export const ExportModal = ({ data, initialScope = 'all', onClose, onCopied }: ExportModalProps) => {
+  const [scope, setScope] = useState<ExportScope>(initialScope);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const json = useMemo(() => JSON.stringify(data, null, 2), [data]);
+
+  const json = useMemo(() => {
+    const payload = scope === 'all' ? data : { [scope]: data[scope] };
+    return JSON.stringify(payload, null, 2);
+  }, [data, scope]);
 
   const handleCopy = async () => {
     const ok = await copyToClipboard(json);
@@ -18,10 +34,35 @@ export const ExportModal = ({ data, onClose, onCopied }: ExportModalProps) => {
     else if (textareaRef.current) textareaRef.current.select();
   };
 
+  const title = scope === 'all' ? '전체 데이터 내보내기' : `${SCOPE_LABEL[scope]} 데이터 내보내기`;
+
   return (
-    <Modal open onClose={onClose} title="전체 데이터 내보내기">
+    <Modal open onClose={onClose} title={title}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+        <label style={{ fontSize: '12px', color: '#555', fontWeight: 600 }}>범위</label>
+        <select
+          value={scope}
+          onChange={(e) => setScope(e.target.value as ExportScope)}
+          style={{
+            padding: '6px 10px',
+            borderRadius: '6px',
+            border: '1px solid #ccc',
+            background: '#fff',
+            color: '#111',
+            fontSize: '12px',
+            fontFamily: 'inherit',
+            cursor: 'pointer',
+          }}
+        >
+          {SCOPE_OPTIONS.map((s) => (
+            <option key={s} value={s}>
+              {SCOPE_LABEL[s]}
+            </option>
+          ))}
+        </select>
+      </div>
       <p style={{ margin: '0 0 12px', fontSize: '12px', color: '#888' }}>
-        아래 JSON을 복사하여 전달하면 코드의 기본 데이터에 반영할 수 있습니다.
+        선택한 범위의 JSON을 복사해 전달하면 해당 탭의 초기 데이터에 반영할 수 있습니다.
       </p>
       <textarea
         ref={textareaRef}
