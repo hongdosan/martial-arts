@@ -210,6 +210,6 @@ export const DEFAULT_LEVELS: Level[] = [
   { id: 'c11', sub: '방어', rank: '', name: '한서불침', aliases: [], desc: '춥고 더움이 침범하지 못함.', conditions: '', notes: '' },
   { id: 'c13', sub: '성취', rank: '', name: '삼화취정', aliases: [], desc: '정, 기, 신 세 가지 꽃이 정수리에 모이는 경지.', conditions: '', notes: '' },
   { id: 'c14', sub: '성취', rank: '', name: '오기조원', aliases: [], desc: '오장의 다섯 기운이 근원으로 조화되는 경지.', conditions: '', notes: '' },
-  { id: 'c15', sub: '성취', rank: '', name: '무극', aliases: [], desc: '극이 없는 경지. 어떠한 한계도 없는 상태.', conditions: '', notes: '' },
   { id: 'c16', sub: '성취', rank: '', name: '반박귀진', aliases: [], desc: '꾸밈을 버리고 본래의 진실로 돌아감.', conditions: '', notes: '' },
+  { id: 'c15', sub: '성취', rank: '', name: '무극', aliases: [], desc: '극이 없는 경지. 어떠한 한계도 없는 상태.', conditions: '', notes: '' },
 ];
