@@ -1,0 +1,47 @@
+Proprietary License — All Rights Reserved
+
+Copyright (c) 2026 홍혁준. All Rights Reserved.
+
+본 저장소(이하 "소프트웨어")에 포함된 모든 소스 코드, 문서, 이미지, 데이터 및 그 밖의 저작물(이하 총칭하여 "저작물")의 저작권은 저작권자 홍혁준에게 독점적으로 귀속됩니다.
+
+저작권자의 사전 서면 동의 없이 다음 행위는 일체 금지됩니다.
+
+  1. 저작물의 전부 또는 일부의 복제, 수정, 2차 저작물 작성
+  2. 저작물의 전부 또는 일부의 배포, 공개, 전송, 전시, 공중송신, 업로드
+  3. 저작물의 전부 또는 일부를 이용한 상업적 이용 (판매, 재판매, 라이선싱, 유료 서비스 제공, 광고 수익 창출 등 일체의 영리 활동 포함)
+  4. 저작물의 전부 또는 일부를 다른 프로젝트, 제품, 서비스에 포함하거나 참조하는 행위
+  5. 저작물을 이용한 역공학(리버스 엔지니어링), 디컴파일, 디스어셈블
+  6. 본 라이선스 고지 또는 저작권 표시의 제거, 변경, 은폐
+
+저장소 또는 저작물에 대한 접근 권한이 부여된 경우라 하더라도, 위 접근 권한은 열람(view)만을 허용하는 것이며, 위 1호 내지 6호의 행위에 대한 어떠한 권리도 묵시적으로 부여되지 않습니다.
+
+위 금지 행위를 위반하는 경우, 저작권자는 저작권법, 부정경쟁방지 및 영업비밀 보호에 관한 법률, 기타 관련 법령에 따른 민·형사상 모든 법적 조치를 취할 수 있습니다.
+
+이용 허락을 원하는 경우 저작권자에게 사전 서면으로 문의하여 별도의 서면 계약을 체결하여야 합니다.
+
+본 저작물은 어떠한 명시적 또는 묵시적 보증 없이 "있는 그대로(AS IS)" 제공되며, 저작권자는 본 저작물의 사용 또는 사용 불가로 인하여 발생하는 어떠한 손해에 대해서도 책임을 지지 않습니다.
+
+─────────────────────────────────────────────────────────────────────────────
+
+Proprietary License — All Rights Reserved
+
+Copyright (c) 2026 홍혁준. All Rights Reserved.
+
+All source code, documentation, images, data, and other materials contained in this repository (the "Software") are the exclusive property of the copyright holder, 홍혁준.
+
+Without the prior written consent of the copyright holder, the following acts are strictly prohibited:
+
+  1. Copying, modifying, or creating derivative works of the Software, in whole or in part;
+  2. Distributing, publishing, transmitting, displaying, broadcasting, or uploading the Software, in whole or in part;
+  3. Any commercial use of the Software, in whole or in part (including but not limited to sale, resale, sublicensing, paid services, and advertising revenue);
+  4. Incorporating or referencing the Software, in whole or in part, into any other project, product, or service;
+  5. Reverse engineering, decompiling, or disassembling the Software;
+  6. Removing, altering, or obscuring this license notice or any copyright notice.
+
+Access to this repository or the Software, if granted, permits viewing only and does not imply any license to perform any of the acts prohibited above.
+
+Any violation of the foregoing shall entitle the copyright holder to pursue all available civil and criminal remedies under applicable copyright, trade-secret, and unfair-competition laws.
+
+For licensing inquiries, contact the copyright holder in writing to enter into a separate written agreement.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM THE USE OR INABILITY TO USE THE SOFTWARE.
