@@ -17,7 +17,7 @@ export const DEFAULT_TITLES: Title[] = [
     tag: '직위',
     desc: '무림맹의 수장. 정파 무림을 대표하는 최고 지도자.',
     members: [],
-    notes: '남궁세가가 자주 맡음.',
+    notes: '',
   },
   { id: 't7', name: '사도제일인', tag: '강함 기준', desc: '사파와 마교를 통틀어 가장 강한 한 명.', members: [], notes: '' },
   {
