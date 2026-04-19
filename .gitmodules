@@ -1,0 +1,3 @@
+[submodule ".private-config"]
+	path = .private-config
+	url = https://github.com/hongdosan/martial-arts-config.git

@@ -15,12 +15,18 @@
 .env.development.local
 .env.test.local
 .env.production.local
+.env.dev
+
+# private config submodule content (symlink targets)
+# .private-config/ 자체는 서브모듈로 추적되며, 아래는 symlink이 생성될 경로
+# (.claude/ 전체가 이미 ignore 되므로 .claude/agents, .claude/artifact symlink 은 자동 제외)
 
 # logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+/logs/
 
 # OS
 .DS_Store
