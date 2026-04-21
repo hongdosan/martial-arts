@@ -43,5 +43,6 @@ Thumbs.db
 # Claude Code
 /.claude/
 
-# 사용자 원본 프롬프트 / 플랜 문서 (공개 저장 대상 아님)
+# 사용자 원본 프롬프트 / 플랜 문서 (공개 저장 대상 아님, 심링크 포함)
 /docs/plans/
+/docs/issue
