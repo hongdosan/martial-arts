@@ -51,8 +51,9 @@
 
 | 분류 | 문서 | 내용 |
 |---|---|---|
-| 시작하기 | [빠른 시작](./docs/readme/getting-started.md) | clone · 서브모듈 초기화 · 실행 · 빌드 |
-| 시작하기 | [프라이빗 설정 관리](./docs/readme/private-config.md) | 서브모듈 구조 · 2단계 커밋 · 최신화 |
+| 시작하기 | [빠른 시작](./docs/readme/getting-started.md) | 권한 있음/없음 시나리오 · 서브모듈 · 실행 · 빌드 |
+| 시작하기 | [프라이빗 설정 관리](./docs/readme/private-config.md) | 서브모듈 구조 · 공개/비밀 분리 · 2단계 커밋 |
+| 시작하기 | [환경 변수 컨벤션](./docs/readme/env-var-convention.md) | 3-tier 파일 계층 · CRA 로딩 · 키 네이밍 · 코드 패턴 |
 | 설계 | [아키텍처 & 기술 스택](./docs/readme/architecture.md) | FSD 레이어 · 의존성 방향 · 스택 선택 |
 | 설계 | [데이터 & 엔티티](./docs/readme/data.md) | 저장소 · 엔티티 구조 · 주요 기능 |
 | 설계 | [Claude 아티팩트](./docs/readme/claude-artifact.md) | 단일 파일 번들 · FSD 와의 차이 |

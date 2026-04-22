@@ -28,6 +28,7 @@
 - [6. 처음 저장소를 받거나, 최신으로 맞추고 싶을 때](#6-처음-저장소를-받거나-최신으로-맞추고-싶을-때)
 - [7. 자주 겪는 문제](#7-자주-겪는-문제)
 - [8. 권한 및 환경](#8-권한-및-환경)
+  - [8.1 공개/비밀 분리 원칙](#81-공개비밀-분리-원칙)
 - [9. 핵심 요약 (치트시트)](#9-핵심-요약-치트시트)
 
 ---
@@ -513,6 +514,31 @@ git submodule update --remote .private-config
 - 프라이빗 저장소 접근 권한이 있어야 `clone --recursive` 가 성공합니다. 권한이 없는 외부 기여자는 공개 영역만 받을 수 있습니다.
 - 심볼릭 링크는 **macOS / Linux 전제** 입니다. Windows 에서는 **WSL** 사용을 권장합니다.
 - IntelliJ IDEA: **Settings → Version Control → Directory Mappings** 에 `.private-config/` 를 별도 등록해야 프라이빗 변경을 IDE가 인식합니다.
+
+### 8.1 공개/비밀 분리 원칙
+
+권한 없는 외부 기여자도 `git clone` 후 `./scripts/init-private.sh && npm install && npm start` 만으로 앱을 Mock 모드로 기동할 수 있어야 합니다. 이를 위해 **설정은 다음 3-tier 로 분리**합니다.
+
+| 티어 | 파일 | 가시성 | 용도 |
+|---|---|---|---|
+| 1. 공개 기본값 | `.env` | 공개 (커밋) | 권한 없이도 앱이 크래시 없이 기동되는 최저선 |
+| 2. 공개 템플릿 | `.env.example` | 공개 (커밋) | 전체 키 목록 + 더미값, 권한 없으면 `.env.dev` 로 복사되어 사용 |
+| 3. 실제 비밀값 | `.private-config/frontend/env/.env.dev` | 프라이빗 | 실제 API 키 · OAuth Secret — 서브모듈에만 존재 |
+
+**[`scripts/init-private.sh`](../../scripts/init-private.sh) 자동 분기**:
+
+```
+서브모듈 존재  →  .env.dev  ─symlink→  .private-config/frontend/env/.env.dev
+서브모듈 부재  →  .env.dev  ─copy──→  .env.example   (Mock 모드)
+```
+
+**비밀이 공개로 새지 않도록 지키는 3가지 규약**:
+
+1. 실제 비밀 값은 **프라이빗 저장소에만** 커밋 — 메인 저장소의 `.env` 에는 Mock/더미 값만
+2. `REACT_APP_*` 접두사는 클라이언트 번들에 포함되므로 **Server Secret 에는 사용 금지** (백엔드에서만 취급)
+3. 새 비밀 키 추가 시 **프라이빗 저장소 먼저 push → 메인 저장소 나중에 push** ([§4 공통 절차](#4-설정을-바꾸고-싶을-때--공통-절차))
+
+상세 규약과 코드 패턴은 [환경 변수 컨벤션](./env-var-convention.md) 참조.
 
 ---
 

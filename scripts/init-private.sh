@@ -24,12 +24,13 @@ ok()    { printf "\033[0;32m[OK]\033[0m    %s\n" "$1"; }
 warn()  { printf "\033[0;33m[WARN]\033[0m  %s\n" "$1"; }
 error() { printf "\033[0;31m[ERROR]\033[0m %s\n" "$1" >&2; }
 
-# 서브모듈 초기화 여부 확인
+# 서브모듈 초기화 여부 — 권한 있는 사용자는 존재, 권한 없는 사용자는 부재
+# 없더라도 exit 하지 않는다. 아래 link() 는 원본 없음 시 skip 하고,
+# 마지막에 env_fallback() 이 .env.dev 미생성 상태를 .env.example 복사로 보완한다.
 if [[ ! -d "$PRIVATE_DIR" ]] || [[ -z "$(ls -A "$PRIVATE_DIR" 2>/dev/null)" ]]; then
-  error ".private-config/ 가 비어있거나 존재하지 않습니다."
-  error "먼저 다음 명령으로 서브모듈을 초기화하세요:"
-  error "    git submodule update --init --recursive"
-  exit 1
+  warn ".private-config/ 가 비어있거나 존재하지 않습니다 (권한 없음 또는 미초기화)."
+  warn "권한이 있다면 다음으로 초기화:  git submodule update --init --recursive"
+  warn "권한이 없다면 계속 진행 — Mock 모드로 기동 가능합니다."
 fi
 
 # 심볼릭 링크 생성 (멱등)
@@ -80,10 +81,32 @@ link() {
   ok "연결 생성: $link_rel -> $rel_src"
 }
 
+# .env.dev fallback — symlink 이 생성되지 않은 경우 .env.example 로부터 복사
+# 다음 3가지 경우 모두에서 동작:
+#   1) 서브모듈 부재 (권한 없는 사용자)
+#   2) 서브모듈 존재하나 .env.dev 원본 파일 미존재 (프라이빗 저장소에 아직 미추가)
+#   3) 수동 삭제로 .env.dev 가 사라진 상태
+env_fallback() {
+  local example="$PROJECT_ROOT/.env.example"
+  local envdev="$PROJECT_ROOT/.env.dev"
+
+  if [[ -L "$envdev" || -e "$envdev" ]]; then
+    return 0
+  fi
+  if [[ ! -f "$example" ]]; then
+    warn ".env.dev / .env.example 모두 부재 — .env 의 공개 기본값만 사용됨"
+    return 0
+  fi
+  cp "$example" "$envdev"
+  ok ".env.example → .env.dev 복사 완료 (Mock 모드)"
+}
+
 info "프라이빗 설정 심볼릭 링크 초기화 시작"
 
 link ".private-config/shared/claude-agents"   ".claude/agents"
 link ".private-config/shared/claude-artifact" ".claude/artifact"
 link ".private-config/frontend/env/.env.dev"  ".env.dev"
+
+env_fallback
 
 info "완료"

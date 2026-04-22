@@ -10,7 +10,8 @@
 /build
 
 # env
-.env
+# .env 와 .env.example 는 공개 기본값/템플릿 — 커밋 대상
+# 실제 개발·로컬 값은 아래 목록으로 차단 (비밀 유출 방지)
 .env.local
 .env.development.local
 .env.test.local
