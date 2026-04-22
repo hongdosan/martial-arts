@@ -2,6 +2,11 @@
 
 [Feature-Sliced Design (FSD)](https://feature-sliced.design/) 기반, 특정 라이브러리에 비의존하는 이식 가능한 구조.
 
+## 목차
+
+- [의존성 방향](#의존성-방향)
+- [기술 스택](#기술-스택)
+
 ```
 src/
 ├── app/              # 부트스트랩
