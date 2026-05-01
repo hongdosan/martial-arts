@@ -9,7 +9,7 @@
 | 카테고리 | 문서 |
 |---|---|
 | 시작하기 | [`getting-started.md`](./getting-started.md) · [`private-config.md`](./private-config.md) · [`env-var-convention.md`](./env-var-convention.md) |
-| 설계 | [`architecture.md`](./architecture.md) · [`data.md`](./data.md) · [`claude-artifact.md`](./claude-artifact.md) |
+| 설계 | [`fe-architecture.md`](./fe-architecture.md) · [`data.md`](./data.md) · [`claude-artifact.md`](./claude-artifact.md) |
 | 하네스 | [`harness/`](./harness/) — 3종 (현 상태 분석 · 도입 가이드 · 설치·적용) |
 | 세션 핸드오프 | [`handoff/`](./handoff/) — 4-Tier 전략 가이드 + 사이클별 핸드오프 메모 |
 | Git 컨벤션 | [`git/`](./git/) — 4종 (브랜치 전략 · 이슈 · 브랜치 네이밍 · 커밋) |

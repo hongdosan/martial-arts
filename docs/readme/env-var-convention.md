@@ -209,6 +209,6 @@ npm install && npm start
 
 - [프라이빗 설정 관리](./private-config.md) — 서브모듈 · symlink · 2단계 커밋
 - [빠른 시작](./getting-started.md) — 최초 clone · 실행 절차
-- [아키텍처 & 기술 스택](./architecture.md) — FSD · `shared/config/` 레이어 역할
+- [아키텍처 & 기술 스택](./fe-architecture.md) — FSD · `shared/config/` 레이어 역할
 - CRA 공식: https://create-react-app.dev/docs/adding-custom-environment-variables/
 - 12-Factor App (Config): https://12factor.net/config

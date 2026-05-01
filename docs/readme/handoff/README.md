@@ -108,7 +108,7 @@
 |------|------|---------|
 | `~/.claude/CLAUDE.md` | 글로벌 사용자 규약 | 사용자 개인 영역 |
 | `.claude/CLAUDE.md` (symlink → `.private-config/claude/CLAUDE.md`) | 천기망 에이전트 위임 가이드 | 변하지 않는 규약만 |
-| `docs/readme/architecture.md` | FE 아키텍처 SSOT | 표준 결정 시점에 갱신 |
+| `docs/readme/fe-architecture.md` | FE 아키텍처 SSOT | 표준 결정 시점에 갱신 |
 | `.private-config/shared/prompt/read_only/{frontend,backend}/*_reference_prompt.md` | FE/BE 단일 기준점 | 표준 결정 시점에 갱신 |
 
 **Pruning 원칙**: "변하는 것" (현재 작업 상태, 진행 중 결정) 은 CLAUDE.md 에 넣지 않는다 — 매 세션 토큰 낭비. 그런 정보는 Tier 2 핸드오프 또는 `harness-state.md` 변경 이력으로.
@@ -121,7 +121,7 @@
 |--------------|---------------------|------|
 | `_registry.md` | (미도입 — 한도 50줄 인덱스) | 핸드오프가 누적되면 신설 |
 | `analysis/` | `.private-config/shared/issue/` | 이슈/티켓 메모와 통합 |
-| `arch/` | `docs/readme/architecture.md`, `docs/readme/harness/`, `harness-state.md` 변경 이력 | 메인 리포트 |
+| `arch/` | `docs/readme/fe-architecture.md`, `docs/readme/harness/`, `harness-state.md` 변경 이력 | 메인 리포트 |
 | `bugs/` | `.private-config/shared/issue/` | issue 와 통합 |
 | `commits/` | git log 자체 (별도 디렉토리 X) | `git log --oneline` 으로 |
 | `design/` | (미정 — 디자인 시스템 결정 후) | |
