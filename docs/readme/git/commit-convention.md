@@ -1,5 +1,7 @@
 # 커밋 컨벤션
 
+<!-- Proprietary — Copyright © 2026 홍혁준. See LICENSE. -->
+
 커밋 메시지 prefix 는 [이슈 prefix](./issue-convention.md#제목-prefix) 및 [브랜치 `<type>`](./branch-naming.md#형식) 과 **완전히 일치**시킵니다. 3종이 어긋나면 작업 추적이 끊깁니다.
 
 ## 목차

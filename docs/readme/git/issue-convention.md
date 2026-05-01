@@ -1,5 +1,7 @@
 # 이슈 컨벤션
 
+<!-- Proprietary — Copyright © 2026 홍혁준. See LICENSE. -->
+
 모든 이슈는 일관된 형식을 따릅니다. 회고록 및 기술 블로그 원천 자료로 재활용할 수 있도록 제목 prefix 와 본문 섹션을 표준화합니다.
 
 > 이슈 prefix 는 [브랜치 네이밍](./branch-naming.md) 및 [커밋 메시지 prefix](./commit-convention.md) 와 **반드시 일치**시킵니다.

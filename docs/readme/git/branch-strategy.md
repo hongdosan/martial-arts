@@ -1,5 +1,7 @@
 # 브랜치 전략
 
+<!-- Proprietary — Copyright © 2026 홍혁준. See LICENSE. -->
+
 이슈 단위로 feature 브랜치를 생성하고, 3단 브랜치(`develop` → `release` → `master`)를 거쳐 배포합니다. 이슈 · 브랜치 · 커밋 prefix 는 모두 일치해야 합니다.
 
 ## 목차

@@ -1,5 +1,7 @@
 # 브랜치 네이밍
 
+<!-- Proprietary — Copyright © 2026 홍혁준. See LICENSE. -->
+
 모든 작업 브랜치는 **이슈 단위로 생성**하며, 이슈 prefix 와 번호가 브랜치 이름에 드러나야 합니다. 브랜치만 보고도 어떤 이슈의 어떤 작업인지 즉시 식별 가능해야 합니다.
 
 > 브랜치 `<type>` 은 [이슈 prefix](./issue-convention.md#제목-prefix) 와 동일해야 하며, [브랜치 전략](./branch-strategy.md) 의 `develop` 에서 분기합니다.
