@@ -1,16 +1,17 @@
+<h1 align="center">天 機 網</h1>
 <p align="center">
-  <br/>
-  <strong>天 機 網</strong>
-  <br/>
   <sub>천기망 — 천하의 기밀을 엮어 강호의 서열을 정하다</sub>
-  <br/><br/>
 </p>
+
+<!-- Proprietary — Copyright © 2026 홍혁준. See LICENSE. -->
 
 <p align="center">
   <img src="https://img.shields.io/badge/TypeScript-strict-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
   <img src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black" alt="React" />
+  <img src="https://img.shields.io/badge/Vite-latest-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/TanStack%20Query-FF4154?style=flat-square&logo=reactquery&logoColor=white" alt="TanStack Query" />
+  <img src="https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
   <img src="https://img.shields.io/badge/Architecture-FSD-8B5CF6?style=flat-square" alt="FSD" />
-  <img src="https://img.shields.io/badge/Storage-Web%20Standard-1D9E75?style=flat-square" alt="Web Standard" />
 </p>
 
 ---
@@ -54,7 +55,11 @@
 | 시작하기 | [빠른 시작](./docs/readme/getting-started.md) | 권한 있음/없음 시나리오 · 서브모듈 · 실행 · 빌드 |
 | 시작하기 | [프라이빗 설정 관리](./docs/readme/private-config.md) | 서브모듈 구조 · 공개/비밀 분리 · 2단계 커밋 |
 | 시작하기 | [환경 변수 컨벤션](./docs/readme/env-var-convention.md) | 3-tier 파일 계층 · CRA 로딩 · 키 네이밍 · 코드 패턴 |
-| 설계 | [아키텍처 & 기술 스택](./docs/readme/architecture.md) | FSD 레이어 · 의존성 방향 · 스택 선택 |
+| 설계 | [아키텍처 & 기술 스택](./docs/readme/architecture.md) | FSD · Vite · TanStack Query · Tailwind · 어댑터 격리 |
+| 설계 | [현 상태 분석](./docs/readme/harness/harness-state.md) | 12개 구성 요소 · 정량 측정 · 비판적 사실 분석 · 변경 이력 |
+| 설계 | ↳ [Harness 도입 가이드](./docs/readme/harness/harness-integration.md) | revfactory/harness 도입 절차 · BE/FE/기타 분담 원칙 |
+| 설계 | ↳ [Harness 설치·적용 가이드](./docs/readme/harness/harness-setup.md) | 플러그인 설치 → 첫 에이전트 생성 · 검증 · 롤백 · 트러블슈팅 |
+| 설계 | [세션 Context Handoff](./docs/readme/handoff/README.md) | 4-Tier 전략 (rewind/compact / Document & Clear / Persistent / Cross-Session Orchestration) |
 | 설계 | [데이터 & 엔티티](./docs/readme/data.md) | 저장소 · 엔티티 구조 · 주요 기능 |
 | 설계 | [Claude 아티팩트](./docs/readme/claude-artifact.md) | 단일 파일 번들 · FSD 와의 차이 |
 | Git | [Git 컨벤션 인덱스](./docs/readme/git/README.md) | 4종 컨벤션 문서 모음 진입점 |

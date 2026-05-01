@@ -1,5 +1,7 @@
 # Claude 아티팩트
 
+<!-- Proprietary — Copyright © 2026 홍혁준. See LICENSE. -->
+
 `src/artifact/codex-artifact.tsx` 는 전체 앱을 단일 파일로 번들한 아티팩트 전용 버전입니다.
 
 **사용법**: 파일 내용을 복사 → Claude 채팅에 붙여넣기 → "React 아티팩트로 만들어줘"

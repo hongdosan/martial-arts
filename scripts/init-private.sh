@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 #
 # init-private.sh
+# Proprietary — Copyright © 2026 홍혁준. See LICENSE.
+#
 # 프라이빗 설정 서브모듈(.private-config/)의 파일을 메인 저장소의 원래 경로로
 # 심볼릭 링크 연결한다. 멱등(idempotent)하게 작동하며 macOS/Linux 전용.
 #
@@ -103,8 +105,9 @@ env_fallback() {
 
 info "프라이빗 설정 심볼릭 링크 초기화 시작"
 
-link ".private-config/shared/claude-agents"   ".claude/agents"
-link ".private-config/shared/claude-artifact" ".claude/artifact"
+link ".private-config/claude/claude-agents"   ".claude/agents"
+link ".private-config/claude/claude-artifact" ".claude/artifact"
+link ".private-config/claude/CLAUDE.md"       ".claude/CLAUDE.md"
 link ".private-config/frontend/env/.env.dev"  ".env.dev"
 
 env_fallback

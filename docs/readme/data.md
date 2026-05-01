@@ -1,5 +1,7 @@
 # 데이터 및 엔티티
 
+<!-- Proprietary — Copyright © 2026 홍혁준. See LICENSE. -->
+
 ## 목차
 
 - [데이터 관리](#데이터-관리)

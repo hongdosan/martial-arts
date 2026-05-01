@@ -1,5 +1,7 @@
 # 빠른 시작
 
+<!-- Proprietary — Copyright © 2026 홍혁준. See LICENSE. -->
+
 > 본 저장소는 프라이빗 설정 서브모듈(`.private-config/`)을 포함하지만, **접근 권한이 없어도 앱을 Mock 모드로 기동**할 수 있습니다. 시나리오별 절차는 아래에서 확인하세요. 서브모듈 운영 상세는 [프라이빗 설정 관리](./private-config.md), 환경 변수 규약은 [환경 변수 컨벤션](./env-var-convention.md) 참조.
 
 ## 목차

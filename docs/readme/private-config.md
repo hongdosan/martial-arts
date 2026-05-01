@@ -1,5 +1,7 @@
 # 프라이빗 설정 관리
 
+<!-- Proprietary — Copyright © 2026 홍혁준. See LICENSE. -->
+
 민감하거나 외부에 공개하고 싶지 않은 설정(에이전트 정의, 아티팩트 원본, 프롬프트, 환경변수, 내부 이슈 기록 등)은 **별도 저장소**인 [`martial-arts-config`](https://github.com/hongdosan/martial-arts-config)에 분리 보관하고, Git **서브모듈(Submodule)** 로 연결합니다.
 
 > **서브모듈이란?** 이 저장소 안에 다른 저장소를 "링크"로 끼워 넣는 기능입니다. 메인 저장소에는 "어느 시점의 프라이빗 저장소를 보고 있는지" 커밋 번호만 기록되고, 실제 파일은 프라이빗 저장소에만 존재합니다.
@@ -42,7 +44,6 @@
 | `.claude/CLAUDE.md` | → | `.private-config/claude/CLAUDE.md` |
 | `.claude/agents/` | → | `.private-config/claude/claude-agents/` |
 | `.claude/artifact/` | → | `.private-config/claude/claude-artifact/` |
-| `docs/issue/` | → | `.private-config/shared/issue/` |
 
 프라이빗 저장소 내부 폴더 구성(참고):
 
@@ -60,7 +61,7 @@
 └── frontend/            # 프론트엔드 전용 (.env.dev 등)
 ```
 
-> **중요**: 메인 저장소의 `.gitignore`는 `.claude/`, `docs/issue`를 모두 무시합니다. 따라서 위 심볼릭 링크는 커밋되지 않고, 로컬에만 존재합니다. **프라이빗 내용은 절대 메인 저장소에 올라가지 않습니다.**
+> **중요**: 메인 저장소의 `.gitignore`는 `.claude/`를 무시합니다. 따라서 위 심볼릭 링크는 커밋되지 않고, 로컬에만 존재합니다. **프라이빗 내용은 절대 메인 저장소에 올라가지 않습니다.**
 
 ---
 
@@ -261,8 +262,7 @@ martial-arts    ── 2단계 push ──▶  martial-arts (공개)
 메인에서 `git push` 만 쳐도 서브모듈까지 같이 올라가도록 설정할 수 있습니다.
 
 ```bash
-# 이 저장소에서만 적용
-cd /Users/hongdosan/IdeaProjects/martial-arts
+# 이 저장소에서만 적용 (프로젝트 root 에서 실행)
 git config push.recurseSubmodules on-demand
 ```
 
@@ -373,14 +373,15 @@ git push
 ```
 
 **심링크 자체를 없애고 싶다면?**
-예: `docs/issue` 노출을 더 이상 원하지 않는 경우
 
 ```bash
-rm docs/issue                       # 심링크만 제거 (원본은 안전)
-# .gitignore 에서 /docs/issue 줄도 삭제
+unlink <symlink-path>                # 심링크만 제거 (원본은 안전 — `rm <symlink>/<file>` 은 target 파일을 지우므로 금지)
+# .gitignore 에서 해당 경로 줄도 삭제
 git add .gitignore
-git commit -m "chore: docs/issue 심링크 해제"
+git commit -m "[<TICKET-KEY>] <symlink-path> 심링크 해제"
 ```
+
+> **주의** — symlink 디렉토리 안의 파일을 `rm <link>/<file>` 로 지우면 *target 파일이 삭제* 됩니다. symlink 자체만 제거하려면 반드시 `unlink <link>` 또는 `rm <link>` (디렉토리 슬래시 없이) 를 사용하세요.
 
 ---
 
