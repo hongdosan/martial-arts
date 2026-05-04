@@ -1,6 +1,6 @@
 <h1 align="center">天 機 網</h1>
 
-![天機網_thumbnail](.private-config/shared/images/天機網_thumbnail.png)
+![天機網_thumbnail](docs/readme/images/天機網_thumbnail.png)
 
 <p align="center">
   <sub>천기망 — 천하의 기밀을 엮어 강호의 서열을 정하다</sub>
