@@ -1,0 +1,6 @@
+rootProject.name = 'martial-arts'
+
+// 무협 통합 서비스 루트 — 하위 무협 관련 서비스들을 composite build로 느슨하게 묶는다.
+// 각 서비스는 독립된 Gradle 프로젝트로 유지하며, 여기서는 참조만 한다.
+// 서비스가 늘어나면 includeBuild 라인만 추가한다.
+includeBuild('martial-life')

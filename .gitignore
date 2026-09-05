@@ -1,0 +1,19 @@
+# Project exclude paths
+/.gradle/
+/martial-life/.gradle/
+
+# Build outputs
+build/
+out/
+*.class
+
+# IDE
+.idea/workspace.xml
+.idea/shelf/
+*.iml.bak
+
+# OS
+.DS_Store
+
+# Claude Code local artifacts (never commit — may contain machine-specific or session data)
+.claude/settings.local.json
