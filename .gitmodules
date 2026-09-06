@@ -1,3 +1,6 @@
 [submodule ".private-config"]
 	path = .private-config
 	url = https://github.com/hongdosan/martial-arts-config.git
+[submodule "martial-world"]
+	path = martial-world
+	url = https://github.com/hongdosan/martial-world.git
